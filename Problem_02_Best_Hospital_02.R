@@ -2,8 +2,9 @@ rm(list=ls())
 
 library(data.table)
 library(dplyr)
-library(naniar)
 library(tibble)
+
+
 # Weirdly this inputs the NAs properly but doesn't allow for the select argument
 # so we're not gonna use it.
 
@@ -46,7 +47,7 @@ typeof(dfoutcomes) # list
 tib <- as_tibble(dfoutcomes) # Don't even need dfoutcomes, see below.
 
 
-### THIS IS ALL YOU NEED SO FAR #####################################################################################
+### THIS WAS ALL I NEEDED (AT FIRST)  #####################################################################################
 tripleoutcomes <- fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",
                         header = TRUE, sep = ",", stringsAsFactors = FALSE,
                         na.strings = "Not Available", select = c(2,11,17,23))
@@ -75,18 +76,40 @@ sapply(outcomes2, typeof)
 
 is_tibble(outcomes2)
 
+
+# Kinda cool but not needed obviously:
+system.time(outcomes2 <- fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",
+                               header = TRUE, sep = ",", stringsAsFactors = FALSE,
+                               na.strings = "Not Available", select = c(2,7,11,17,23)) %>%
+                  naniar::replace_with_na_all(condition = ~.x %in% "Not Available") %>% # Doing it with :: removes the need to load another package we're only going to use for one function call one time.
+                  as_tibble %>%
+                  mutate(across(3:5, as.numeric)) %>%
+                  setnames(c("Hospital","State","Attack","Failure","Pneumonia")))
+
 rm(list=ls())
-# I want it all in one piping!
+# Data Import in Single Piping Block ####
 
 outcomes2 <- fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",
                    header = TRUE, sep = ",", stringsAsFactors = FALSE,
                    na.strings = "Not Available", select = c(2,7,11,17,23)) %>%
-      naniar::replace_with_na_all(condition = ~.x %in% "Not Available") %>%
+      naniar::replace_with_na_all(condition = ~.x %in% "Not Available") %>% # Doing it with :: removes the need to load another package we're only going to use for one function call one time.
       as_tibble %>%
       mutate(across(3:5, as.numeric)) %>%
+      mutate(across(2, as.factor)) %>%
       setnames(c("Hospital","State","Attack","Failure","Pneumonia"))
 
 sapply(outcomes2, typeof)
+is.factor(outcomes2$State)
+str(outcomes2)
+# Why is State a factor with 54 levels, not 50? Let's check it out:
+
+
+levels(outcomes2$State)
+
+table(outcomes2$State)
+
+# Oh, it's because it includes DC, GU (Guam),VI (Virgin Islands) and PR (Puerto Rico).
+
 # Woo I did it, thank you data.table::setnames()
 # Also obviously I need state data so I went back and added it in, and due to my
 # clean code, it was very easy to do so! Just added ,7, and "State",
@@ -94,7 +117,27 @@ sapply(outcomes2, typeof)
 # Now to just actually, you know, get to coding the function itself rather than
 # a beautiful code to retrieve the data I need, lol.
 
-?`::`
+# Attempt at actually coding the required function ####
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Holy shit?? ####
+# You can create skip-to-able subsections in your code by starting a comment block with:
+#  the following: # TITLE ####. Must be four #'s after the title, and a space or nothing after the four #'s.
+
 
 
 

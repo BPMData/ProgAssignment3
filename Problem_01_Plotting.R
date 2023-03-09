@@ -5,10 +5,10 @@ getwd()
 browseVignettes("data.table")
 browseVignettes("dplyr")
 
-library(data.table)
 library(dplyr)
+library(data.table)
 library(naniar)
-
+library(styler)
 
 ?fread
 outcomes <- fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",

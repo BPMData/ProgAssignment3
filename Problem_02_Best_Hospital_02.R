@@ -3,7 +3,7 @@ rm(list=ls())
 library(data.table)
 library(dplyr)
 library(naniar)
-
+library(tibble)
 # Weirdly this inputs the NAs properly but doesn't allow for the select argument
 # so we're not gonna use it.
 
@@ -43,9 +43,95 @@ sapply(dfoutcomes, typeof) # Obviously still all character
 
 typeof(dfoutcomes) # list
 
-tib <- as_tibble(dfoutcomes)
+tib <- as_tibble(dfoutcomes) # Don't even need dfoutcomes, see below.
 
-### OMG THANK YOU ###
+
+### THIS IS ALL YOU NEED SO FAR #####################################################################################
+tripleoutcomes <- fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",
+                        header = TRUE, sep = ",", stringsAsFactors = FALSE,
+                        na.strings = "Not Available", select = c(2,11,17,23))
+
+
+outcomes_cleaned <- tripleoutcomes %>%
+      replace_with_na_all(condition = ~.x %in% "Not Available") %>%
+      as_tibble
+
+
+rm(list=ls())
+# The above works so far but can I write it as one nice piping block? Let's save the above in case
+# I break it...
+
+
+outcomes2 <- fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",
+                        header = TRUE, sep = ",", stringsAsFactors = FALSE,
+                        na.strings = "Not Available", select = c(2,11,17,23)) %>%
+      replace_with_na_all(condition = ~.x %in% "Not Available") %>%
+            as_tibble %>%
+                  mutate(across(2:4, as.numeric))
+
+colnames(outcomes2) <- c("Hospital","Attack","Failure","Pneumonia")
+
+sapply(outcomes2, typeof)
+
+is_tibble(outcomes2)
+
+rm(list=ls())
+# I want it all in one piping!
+
+outcomes2 <- fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",
+                   header = TRUE, sep = ",", stringsAsFactors = FALSE,
+                   na.strings = "Not Available", select = c(2,7,11,17,23)) %>%
+      naniar::replace_with_na_all(condition = ~.x %in% "Not Available") %>%
+      as_tibble %>%
+      mutate(across(3:5, as.numeric)) %>%
+      setnames(c("Hospital","State","Attack","Failure","Pneumonia"))
+
+sapply(outcomes2, typeof)
+# Woo I did it, thank you data.table::setnames()
+# Also obviously I need state data so I went back and added it in, and due to my
+# clean code, it was very easy to do so! Just added ,7, and "State",
+
+# Now to just actually, you know, get to coding the function itself rather than
+# a beautiful code to retrieve the data I need, lol.
+
+?`::`
+
+
+
+# Holy shit it worked! That's way nicer, and my environment has literally only one object in it right now.
+# Beautiful stuff.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################### ALL BS BELOW THIS POINT #########################################
+?colnames<-
+
+
+rm(list=ls())
+
+            mutate(across(2:4,as.numeric)) -> tibmutated
+
+
+rm(tibmutated)
+3+3
+
+
+rm(tib)
+tib <- as_tibble(outcomes_cleaned)
 tibmutated <- tib %>%
       mutate(across(2:4,as.numeric))
 ######################################

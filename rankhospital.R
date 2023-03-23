@@ -1,6 +1,5 @@
 library(tidyverse)
 
-
 # Read in our data
 outcomes <- data.table::fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",
                               header = TRUE, sep = ",", stringsAsFactors = FALSE,
@@ -18,7 +17,7 @@ outcomes.split <- split(outcomes, outcomes$State)
 # Create our outcome ranks vectors...
 
 getRank <- function(df, column.name) {
-      ColumnRank <- rank(df[[column.name]], ties.method = "min", na.last = "keep")
+      ColumnRank <- rank(df[[column.name]], ties.method = "first", na.last = "keep")
       ColumnRank
 }
 
@@ -94,3 +93,10 @@ rankhospital("CA","Heart Failure", "worst")
 rankhospital("Alaska","Heart Failure",1)
 
 rankhospital("AK","Motion Sickness",1)
+
+rankhospital("AK", "Heart Failure", 1)
+rankhospital("AK", "Heart Failure", 2)
+rankhospital("AK", "Heart Failure", 3)
+rankhospital("AK", "Heart Failure", 4)
+rankhospital("AK", "Heart Failure", 5)
+

@@ -190,7 +190,10 @@ testframe1
 
 testframe2 <- data.table::setnames(data.frame(hospital = NA, state = names(outcomes.split[7])), c("Applesauce","Aardvark"))
 testframe2
+<<<<<<< HEAD
 
 CTSubset <- outcomes.split[[7]]
 
 colnames(CTSubset)
+=======
+>>>>>>> 4e07ea465e30a9f291f72584592c0eafa4851a26

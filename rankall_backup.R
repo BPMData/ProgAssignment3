@@ -55,11 +55,7 @@ rankall <- function(outcome, num) {
       # the appropriate rank depending on the outcome entered
       if(outcome == "Heart Attack"){index = 7}
       else if (outcome == "Heart Failure"){index = 8}
-<<<<<<< HEAD
       else if (outcome == "Pneumonia"){index = 6}
-=======
-      else if (outcome == "Pneumonia"){index = 5}
->>>>>>> 4e07ea465e30a9f291f72584592c0eafa4851a26
       # Wow that was so much cleaner than how I did it in the other function
 
       # Now our for loop to create our results data frame
@@ -96,14 +92,11 @@ rankall <- function(outcome, num) {
 
       rownames(results) <- NULL # The row names will be nonsensical as they're derived from 54 data frame subsets
                                 # so best to just remove them
-<<<<<<< HEAD
 
       # Actually though, we can add back in sensical rownames:
       statenames <- as.character(unlist(as.vector(results[2])))
       rownames(results) <- statenames
 
-=======
->>>>>>> 4e07ea465e30a9f291f72584592c0eafa4851a26
       results
 }
 
@@ -113,10 +106,6 @@ rankall("Heart Failure",1)
 rankall("Heart Failure","best")
 rankall("Heart Failure","worst")
 rankall("Heart Failure",150)
-<<<<<<< HEAD
 
 rankall("Heart Attack", 15)
-pneumoniasbest<- rankall("Pneumonia", "best")
 rankall("Pneumonia", 27)
-=======
->>>>>>> 4e07ea465e30a9f291f72584592c0eafa4851a26

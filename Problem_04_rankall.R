@@ -122,10 +122,11 @@ rankall <- function(outcome, num) {
             statesubset <- subset(outcomes.split[[i]], outcomes.split[[i]][index] == z)[1:2]
 
             if (nrow(statesubset) == 0) {
-                  results <- rbind(results, data.frame(hospital = NA, state = names(outcomes.split[i]))
+                  results <- rbind(results, data.frame(Hospital = NA, State = names(outcomes.split[i])))
             }
+            # Not sure why I needed to capitalize Hospital and State here, but hey, it worked.
 
-            results <- rbind(results, statesubset)
+            else {results <- rbind(results, statesubset)}
       }
 
       rownames(results) <- NULL
@@ -184,6 +185,12 @@ stateoutcomesubset[, 1]
 
 stateoutcomesubset
 
-testframe <- data.table::setnames(data.frame(hospital = NA, state = "CT"), c("Applesauce","Aardvark"))
+testframe1 <- data.table::setnames(data.frame(hospital = NA, state = "CT"), c("Applesauce","Aardvark"))
+testframe1
 
-testframe
+testframe2 <- data.table::setnames(data.frame(hospital = NA, state = names(outcomes.split[7])), c("Applesauce","Aardvark"))
+testframe2
+
+CTSubset <- outcomes.split[[7]]
+
+colnames(CTSubset)

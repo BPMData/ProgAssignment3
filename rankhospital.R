@@ -1,4 +1,5 @@
 library(tidyverse)
+library(data.table)
 
 # Read in our data
 outcomes <- data.table::fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/hospitaldata/outcomes.csv",
@@ -12,6 +13,23 @@ outcomes <- data.table::fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/h
 
 # Create our list of data frames split by state
 outcomes.split <- split(outcomes, outcomes$State)
+
+# Sort it alphabetically - two options.
+
+#Option one - with a for loop
+outcomes_split_sorted <- list()
+
+for(i in 1:length(outcomes.split)) {
+      sortedstate <- outcomes.split[[i]][order(outcomes.split[[i]]$Hospital), ]
+      outcomes_split_sorted[[i]] <- sortedstate
+}
+
+names(outcomes_split_sorted) <- as.vector(names(outcomes.split))
+
+
+# Option two - much easier - with lapply
+
+outcomes.split <- lapply(outcomes.split, function(x) x[order(x$Hospital),])
 
 
 # Create our outcome ranks vectors...
@@ -64,9 +82,9 @@ rankhospital <- function(x,y,num) {
 
       # Now to calculate z based off of num, including best and worst
 
-      if (num == "best") {
+      if (num == "best" | num == "Best") {
             z = 1
-      } else if (num == "worst") {
+      } else if (num == "worst" | num == "Worst") {
             z = max(na.omit(outcome[,2]))
       } else {
             z = num
@@ -100,3 +118,9 @@ rankhospital("AK", "Heart Failure", 3)
 rankhospital("AK", "Heart Failure", 4)
 rankhospital("AK", "Heart Failure", 5)
 
+# For the quiz:
+rankhospital("NC","Heart Attack", "worst")
+rankhospital("NC","Heart Attack", "Worst")
+rankhospital("WA","Heart Attack",7)
+rankhospital("TX","Pneumonia",10)
+rankhospital("NY","Heart Attack", 7)

@@ -13,7 +13,9 @@ outcomes <- data.table::fread("C:/Users/corma/OneDrive/Documents/R/Assignment3/h
 # Create our list of data frames split by state
 outcomes.split <- split(outcomes, outcomes$State)
 
+# Sort this list alphabetically - this ensures that I get the right answers
 
+outcomes.split <- lapply(outcomes.split, function(x) x[order(x$Hospital),])
 # Create our outcome ranks vectors...
 
 getRank <- function(df, column.name) {
@@ -43,7 +45,8 @@ colnames(outcomes.split[[i]])[ncol(outcomes.split[[i]])] <- "FailureRank"
 
 rankall <- function(outcome, num) {
       # Let's first get our invalid outcome stop message out of the way...
-      if(!(outcome %in% c("Heart Failure","Heart Attack","Pneumonia")))
+      if(!(outcome %in% c("Heart Failure","Heart Attack","Pneumonia",
+                          "heart failure","heart attack","pneumonia")))
             stop("invalid outcome")
 
       # Create an empty data frame to store the results
@@ -53,9 +56,9 @@ rankall <- function(outcome, num) {
 
       # Create the index number that tells the function which column to look for
       # the appropriate rank depending on the outcome entered
-      if(outcome == "Heart Attack"){index = 7}
-      else if (outcome == "Heart Failure"){index = 8}
-      else if (outcome == "Pneumonia"){index = 6}
+      if(outcome == "Heart Attack" | outcome == "heart attack"){index = 7}
+      else if (outcome == "Heart Failure" | outcome == "heart failure"){index = 8}
+      else if (outcome == "Pneumonia" | outcome == "pneumonia"){index = 6}
 
       # Wow that was so much cleaner than how I did it in the other function
 
@@ -68,9 +71,9 @@ rankall <- function(outcome, num) {
 
             worstdeterminant <- outcomes.split[[i]][index]
 
-            if (num == "best") {
+            if (num == "best" | num == "Best") {
                   z = 1
-            } else if (num == "worst") {
+            } else if (num == "worst" | num == "Worst") {
                   z = max(na.omit(worstdeterminant[,1]))
             } else {
                   z = num
@@ -107,7 +110,26 @@ rankall("Heart Failure",1)
 
 rankall("Heart Failure","best")
 rankall("Heart Failure","worst")
+rankall("Heart Failure","Worst")
 rankall("Heart Failure",150)
 rankall("Heart Attack", 15)
-rankall("Pneumonia", 27)
 
+rankall("Heart Failure", 15)
+
+rankall("heart failure", 15)
+rankall("heart attack", 15)
+rankall("Pneumonia", 27)
+rankall("pneumonia",27)
+
+# For the quiz:
+rm(list=ls())
+
+r <- rankall("Heart Attack",4)
+as.character(subset(r,state == "HI")$hospital)
+
+
+r <- rankall("pneumonia","worst")
+as.character(subset(r, state == "NJ")$hospital)
+
+r <- rankall("heart failure",10)
+as.character(subset(r, state == "NV")$hospital)

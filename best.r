@@ -23,5 +23,8 @@ best_hospital("AZ", "Pneumonia")
 # I didn't actually need to create that index, but I like it this way, and it
 # came in handy for rankhospital()
 
+# For the Quiz:
+best_hospital("SC","Heart Attack")
 
-
+best_hospital("NY","Pneumonia")
+best_hospital("AK","Pneumonia")
